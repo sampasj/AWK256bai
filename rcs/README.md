@@ -1,4 +1,5 @@
 # 実行例
+## ターミナルのフォントは等幅フォントにして実行
 ```
 $ awk -f rcs.awk pent
 [elxj=ypv2[elxj=ypv2[elxj=ypv2[elxj=ypv2[el=`4ypv2[el=`4ypv2[el=`4ypv2[el=`4yp
