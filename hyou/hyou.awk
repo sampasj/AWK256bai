@@ -45,7 +45,7 @@ END {
 		col[i] += col[i] % width;
 	}
 	for (i = 1; i <= nf; i++) {
-		left_fmt[i] = sprintf("%%-%ds", col[i]);
+		left_fmt[i] = sprintf("%%-%ds", col[i] - length(col[i]));
 		right_fmt[i] = sprintf("%%%ds", col[i]);
 	}
 
