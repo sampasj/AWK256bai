@@ -117,7 +117,7 @@ function repeat(s, n,		r)
 }
 
 function usage() {
-	printf "usage: %s -f hyou.awk [-- -ajn] <filename>\n", 
+	printf "usage: %s -f hyou.awk [-- -aj] <filename>\n", 
 	 ARGV[0] > "/dev/stderr";
 	escape = 1; exit;
 }
