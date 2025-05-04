@@ -62,7 +62,7 @@ END {
 			if (field[j] ~ /^\(.*\)$/) {
 				field[j] = substr(field[j], 2, length(field[j]) - 2);
 				printf "%s", center(col[j], field[j]);
-			} else if (field[j] ~ /^[\\$¥]?-?[0-9,.]+円?$/) {
+			} else if (field[j] ~ /^[\\$¥]?-?[0-9,.]+円?錠?$/) {
 				# 全角文字補正 nzen(str) str中の全角文字の数
 		        right_fmt_zen = sprintf("%%%ds", col[j] - nzen(field[j]));
 				printf right_fmt_zen, field[j];
