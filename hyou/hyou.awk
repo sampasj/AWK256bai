@@ -15,7 +15,7 @@ BEGIN {
 			split("┬ ┯ ┼ ┿ ┴ ┷", x_char);
 			split("─ ━ ─ ━ ─ ━", hline_char);
 			split("│ ┃", vline_char); 
-			width = 2;
+			width = 1;   # 全角幅の罫線の場合 2
 		} else {			
 			usage();
 			exit(-1);
@@ -45,7 +45,7 @@ END {
 		col[i] += col[i] % width;
 	}
 	for (i = 1; i <= nf; i++) {
-		left_fmt[i] = sprintf("%%-%ds", col[i] - length(col[i]));
+		left_fmt[i] = sprintf("%%-%ds", col[i]);
 		right_fmt[i] = sprintf("%%%ds", col[i]);
 	}
 
@@ -65,7 +65,15 @@ END {
 			} else if (field[j] ~ /^[\\$¥]?-?[0-9,.]+円?$/) {
 				printf right_fmt[j], field[j];
 			} else {
-				printf left_fmt[j], field[j];
+				# 全角文字補正
+		        if (field[j] ~ /^[ -~]*$/) {
+	        		hosei = 0
+		        } else {
+			        hosei = length(field[j])
+		        }
+		        # print hosei, col[j], field[j]
+		        left_fmt_zen = sprintf("%%-%ds", col[j] - hosei);
+				printf left_fmt_zen, field[j];
 			}
 		}
 		vline(2);
