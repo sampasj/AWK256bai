@@ -63,16 +63,12 @@ END {
 				field[j] = substr(field[j], 2, length(field[j]) - 2);
 				printf "%s", center(col[j], field[j]);
 			} else if (field[j] ~ /^[\\$¥]?-?[0-9,.]+円?$/) {
-				printf right_fmt[j], field[j];
+				# 全角文字補正 nzen(str) str中の全角文字の数
+		        right_fmt_zen = sprintf("%%%ds", col[j] - nzen(field[j]));
+				printf right_fmt_zen, field[j];
 			} else {
-				# 全角文字補正
-		        if (field[j] ~ /^[ -~]*$/) {
-	        		hosei = 0
-		        } else {
-			        hosei = length(field[j])
-		        }
-		        # print hosei, col[j], field[j]
-		        left_fmt_zen = sprintf("%%-%ds", col[j] - hosei);
+				# 全角文字補正 nzen(str) str中の全角文字の数
+		        left_fmt_zen = sprintf("%%-%ds", col[j] - nzen(field[j]));
 				printf left_fmt_zen, field[j];
 			}
 		}
@@ -127,7 +123,7 @@ function usage() {
 }
 
 # https://mfi.sub.jp/_html_awk/gawk_blength.html
-#.  _asc_init();ASCII+半角カナ辞書(Shift_JIS)
+#  _asc_init();ASCII+半角カナ辞書(Shift_JIS)
 function _asc_init(    i, hk, ar, qt) {
     for (i = 0; i < 128; i++) _asc[sprintf("%c", i)] = i;
     hk = "｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ";
@@ -135,10 +131,18 @@ function _asc_init(    i, hk, ar, qt) {
     for (i = 1; i <= qt; i++) _asc[ar[i]] = 160 + i;    #Shift_JIS
     _SCLP = " ";     #マルチバイト文字の断片を表す文字
 }
-#.  blength();文字列長さ疑似バイトを返す(辞書_asc)
+#  blength();文字列長さ疑似バイトを返す(辞書_asc)
 function blength(str,    i, ch, lenb) {
     lenb = 0;
     while (ch = substr(str, ++i, 1))
         (ch in _asc) ? lenb += 1 : lenb += 2;
+    return lenb;
+}
+
+#  nzen();全角文字数を返す
+function nzen(str,    i, ch, lenb) {
+    lenb = 0;
+    while (ch = substr(str, ++i, 1))
+        if (!(ch in _asc)) lenb++;
     return lenb;
 }
