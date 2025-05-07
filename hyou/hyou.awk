@@ -124,6 +124,13 @@ function usage() {
 
 # https://mfi.sub.jp/_html_awk/gawk_blength.html
 #  _asc_init();ASCII+半角カナ辞書(Shift_JIS)
+#
+# 上記サイトのコードをコメントごと借用しているのでShift_JISという
+# コメントがあるがUTF-8で動作するようになっているのでShift_JISは
+# もはや関係ないがそのままにしてある。
+# 期せずして半角カタカナにも対応しているがもちろん1バイトコードの
+# カタカナではなくUnicode(UTF-8)のカタカナである
+#
 function _asc_init(    i, hk, ar, qt) {
     for (i = 0; i < 128; i++) _asc[sprintf("%c", i)] = i;
     hk = "｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ";
@@ -131,6 +138,7 @@ function _asc_init(    i, hk, ar, qt) {
     for (i = 1; i <= qt; i++) _asc[ar[i]] = 160 + i;    #Shift_JIS
     _SCLP = " ";     #マルチバイト文字の断片を表す文字
 }
+
 #  blength();文字列長さ疑似バイトを返す(辞書_asc)
 function blength(str,    i, ch, lenb) {
     lenb = 0;
